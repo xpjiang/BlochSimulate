@@ -9,14 +9,15 @@ T2 = 0.01;                  % 50ms
 M0 = 1;
 
 % --- 2. 模拟环境设置 (考虑频率偏移) ---
-df_offset = 100;            % 100Hz 的频率偏移 (Off-resonance)
-dt = 1e-5;                  % 时间步长 (10us)，激发过程需要更细的时间步长
+df_offset = 100;            % O1 100Hz 的频率偏移 (Off-resonance)
+dt = 1e-6;                  % 时间步长 (10us)，激发过程需要更细的时间步长
 
 % --- 3. 阶段一：RF 激发 (RF Excitation) ---
 flip_angle = 90;            % 翻转角 (度)
 t_rf = 0.04;                % RF 脉冲持续时间 1ms
 % 计算达到该翻转角所需的 B1 强度: flip_angle = gamma_rad * B1 * t_rf
 B1_amp = (deg2rad(flip_angle)) / (gamma_rad * t_rf); 
+rf_df = 10; % RF 10Hz的频率偏移 (Off-resonance)
 
 time_rf = 0:dt:t_rf;
 M = [0; 0; M0];             % 初始状态：处于 Mz 轴
@@ -25,9 +26,9 @@ M_exc_history = zeros(3, length(time_rf));
 for t = 1:length(time_rf)
 % A. 构建 3x3 算子矩阵 A
     % 旋转部分 (假设 RF 沿 x 轴，考虑 10Hz 的微小失谐)
-    df = 10; 
+    
     omega_x = gamma_rad * B1_amp;
-    omega_z = 2 * pi * df;
+    omega_z = 2 * pi * (df+df_offset);
     
     % 弛豫部分
     R1 = 1/T1;
