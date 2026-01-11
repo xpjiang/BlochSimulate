@@ -45,7 +45,7 @@ function ax = plot_mri_sequence(Spins, RF, Grads, t_ms, signal)
 
     %% --- 子图 4：Signal ---
     ax.ax4 = nexttile;
-    plot(t_ms, abs(signal), 'k', 'LineWidth', 1.5); hold on
+    plot(t_ms, abs(signal), 'LineWidth', 1.5); hold on
     plot(t_ms, real(signal), 'LineWidth', 1.2)
     plot(t_ms, imag(signal), 'LineWidth', 1.2)
     ylabel('M_{xy}')
