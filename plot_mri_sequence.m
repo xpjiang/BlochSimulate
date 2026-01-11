@@ -33,9 +33,12 @@ function ax = plot_mri_sequence(Spins, RF, Grads, t_ms, signal)
 
     %% --- 子图 2：RF ---
     ax.ax2 = nexttile;
-    plot(t_ms, abs(RF.B1)*1e6, 'LineWidth', 1.2)
+    plot(t_ms, abs(RF.B1)*1e6, 'LineWidth', 1.2); hold on
+    plot(t_ms, real(RF.B1)*1e6, 'LineWidth', 1.2)
+    plot(t_ms, imag(RF.B1)*1e6, 'LineWidth', 1.2)
     ylabel('RF (\muT)')
     grid on
+    hold off;
 
     %% --- 子图 3：Gradient ---
     ax.ax3 = nexttile;
@@ -50,7 +53,8 @@ function ax = plot_mri_sequence(Spins, RF, Grads, t_ms, signal)
     plot(t_ms, imag(signal), 'LineWidth', 1.2)
     ylabel('M_{xy}')
     xlabel('Time (ms)')
-    grid on
+    grid on;
+	hold on;
 
     %% --- 共享 x 轴（2–4） ---
     linkaxes([ax.ax2, ax.ax3, ax.ax4], 'x')
